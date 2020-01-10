@@ -5,5 +5,13 @@
     <RootNamespace>net_core_bootcamp_b1_mert</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Users\Mert\Documents\Bootcamp\B1\net-core-bootcamp-b1-mert\net-core-bootcamp-b1-mert.swagger.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc5" />
+  </ItemGroup>
+
 
 </Project>
