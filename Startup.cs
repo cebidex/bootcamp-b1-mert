@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using net_core_bootcamp_b1_mert.Services;
 
 namespace net_core_bootcamp_b1_mert
 {
@@ -48,6 +49,8 @@ namespace net_core_bootcamp_b1_mert
             });
 
             services.AddControllers();
+
+            services.AddSingleton<IEventService,EventService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
