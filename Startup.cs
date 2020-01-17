@@ -52,6 +52,7 @@ namespace net_core_bootcamp_b1_mert
 
             services.AddSingleton<IEventService,EventService>();
             services.AddSingleton<IHWEventService, HWEventService>();
+            services.AddSingleton<IHWBookService, HWBookService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
