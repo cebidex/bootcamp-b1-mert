@@ -15,7 +15,7 @@ namespace net_core_bootcamp_b1_mert.DTOs
         [Required]
         public double Price { get; set; }
     }
-    public class HWBookUpdateDto:HWBookAddDto
+    public class HWBookUpdateDto : HWBookAddDto
     {
         public Guid Id { get; set; }
     }
