@@ -13,6 +13,7 @@ namespace net_core_bootcamp_b1_mert.Services
         public string Delete(Guid Id);
         public IList<HWEventGetDto> Get();
     }
+
     public class HWEventService : IHWEventService
     {
         private static readonly IList<HWEvent> data = new List<HWEvent>();

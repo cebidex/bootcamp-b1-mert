@@ -51,6 +51,7 @@ namespace net_core_bootcamp_b1_mert
             services.AddControllers();
 
             services.AddSingleton<IEventService,EventService>();
+            services.AddSingleton<IHWEventService, HWEventService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
