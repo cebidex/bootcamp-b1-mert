@@ -49,9 +49,9 @@ namespace net_core_bootcamp_b1_mert
             services.AddDbContext<MertDBContext>(options => options
                 .UseSqlServer(Configuration.GetConnectionString("BootcampDbConnection")));
 
-            services.AddSingleton<IEventService,EventService>();
-            services.AddSingleton<IHWEventService, HWEventService>();
-            services.AddSingleton<IHWBookService, HWBookService>();
+            services.AddTransient<IEventService,EventService>();
+            services.AddTransient<IHWEventService, HWEventService>();
+            services.AddTransient<IHWBookService, HWBookService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

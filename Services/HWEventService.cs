@@ -1,24 +1,33 @@
-﻿using net_core_bootcamp_b1_mert.DTOs;
+﻿using Microsoft.EntityFrameworkCore;
+using net_core_bootcamp_b1_mert.Database;
+using net_core_bootcamp_b1_mert.DTOs;
 using net_core_bootcamp_b1_mert.Helpers;
 using net_core_bootcamp_b1_mert.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace net_core_bootcamp_b1_mert.Services
 {
     public interface IHWEventService
     {
-        public ApiResult Add(HWEventAddDto model);
-        public ApiResult Update(HWEventUpdateDto model);
-        public ApiResult Delete(Guid Id);
-        public IList<HWEventGetDto> Get();
+        public Task<ApiResult> Add(HWEventAddDto model);
+        public Task<ApiResult> Update(HWEventUpdateDto model);
+        public Task<ApiResult> Delete(Guid Id);
+        public Task<IList<HWEventGetDto>> Get();
     }
 
     public class HWEventService : IHWEventService
     {
-        private static readonly IList<HWEvent> data = new List<HWEvent>();
-        public ApiResult Add(HWEventAddDto model)
+        private readonly MertDBContext _context;
+
+        public HWEventService(MertDBContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<ApiResult> Add(HWEventAddDto model)
         {
             var entity = new HWEvent
             {
@@ -35,28 +44,32 @@ namespace net_core_bootcamp_b1_mert.Services
             entity.Subject = model.Subject;
             entity.Desc = model.Desc;
 
-            data.Add(entity);
+            await _context.HWEvent.AddAsync(entity);
+            await _context.SaveChangesAsync();
 
             return new ApiResult { Data = model.Name, Message = ApiResultMessages.Ok };
         }
 
-        public ApiResult Delete(Guid Id)
+        public async Task<ApiResult> Delete(Guid Id)
         {
-            var entity = data.Where(x => x.Id == Id).FirstOrDefault();
+            var entity = await _context.HWEvent.Where(x => x.Id == Id).FirstOrDefaultAsync();
             if (entity == null)
             {
                 return new ApiResult { Data = Id, Message = ApiResultMessages.HEE01 };
             }
             entity.IsDeleted = true;
 
+            await _context.SaveChangesAsync();
+
             return new ApiResult { Data = entity.Name, Message = ApiResultMessages.Ok };
         }
 
-        public IList<HWEventGetDto> Get()
+        public async Task<IList<HWEventGetDto>> Get()
         {
             var result = new List<HWEventGetDto>();
 
-            result = data
+            result = await _context
+                .HWEvent
                 .Where(x => !x.IsDeleted)
                 .Select(s => new HWEventGetDto
                 {
@@ -71,14 +84,14 @@ namespace net_core_bootcamp_b1_mert.Services
                     Subject = s.Subject,
                     Desc = s.Desc
                 })
-                .ToList();
+                .ToListAsync();
 
             return result;
         }
 
-        public ApiResult Update(HWEventUpdateDto model)
+        public async Task<ApiResult> Update(HWEventUpdateDto model)
         {
-            var entity = data.Where(x => x.Id == model.Id && !x.IsDeleted).FirstOrDefault();
+            var entity = await _context.HWEvent.Where(x => x.Id == model.Id && !x.IsDeleted).FirstOrDefaultAsync();
             if (entity == null)
             {
                 return new ApiResult { Data = model.Id, Message = ApiResultMessages.HEE01 };
@@ -92,6 +105,8 @@ namespace net_core_bootcamp_b1_mert.Services
             entity.Price = model.Price;
             entity.Subject = model.Subject;
             entity.Desc = model.Desc;
+
+            await _context.SaveChangesAsync();
 
             return new ApiResult { Data = entity.Id, Message = ApiResultMessages.Ok };
         }
