@@ -1,4 +1,5 @@
 ﻿using net_core_bootcamp_b1_mert.DTOs;
+using net_core_bootcamp_b1_mert.Helpers;
 using net_core_bootcamp_b1_mert.Models;
 using System;
 using System.Collections.Generic;
@@ -8,16 +9,16 @@ namespace net_core_bootcamp_b1_mert.Services
 {
     public interface IHWEventService
     {
-        public string Add(HWEventAddDto model);
-        public string Update(HWEventUpdateDto model);
-        public string Delete(Guid Id);
+        public ApiResult Add(HWEventAddDto model);
+        public ApiResult Update(HWEventUpdateDto model);
+        public ApiResult Delete(Guid Id);
         public IList<HWEventGetDto> Get();
     }
 
     public class HWEventService : IHWEventService
     {
         private static readonly IList<HWEvent> data = new List<HWEvent>();
-        public string Add(HWEventAddDto model)
+        public ApiResult Add(HWEventAddDto model)
         {
             var entity = new HWEvent
             {
@@ -35,19 +36,20 @@ namespace net_core_bootcamp_b1_mert.Services
             entity.Desc = model.Desc;
 
             data.Add(entity);
-            return model.Name + " Eklendi";
+
+            return new ApiResult { Data = model.Name, Message = ApiResultMessages.Ok };
         }
 
-        public string Delete(Guid Id)
+        public ApiResult Delete(Guid Id)
         {
             var entity = data.Where(x => x.Id == Id).FirstOrDefault();
             if (entity == null)
             {
-                return "ID Bulunamadi";
+                return new ApiResult { Data = Id, Message = ApiResultMessages.HEE01 };
             }
             entity.IsDeleted = true;
 
-            return entity.Name + " Silindi";
+            return new ApiResult { Data = entity.Name, Message = ApiResultMessages.Ok };
         }
 
         public IList<HWEventGetDto> Get()
@@ -70,16 +72,18 @@ namespace net_core_bootcamp_b1_mert.Services
                     Desc = s.Desc
                 })
                 .ToList();
+
             return result;
         }
 
-        public string Update(HWEventUpdateDto model)
+        public ApiResult Update(HWEventUpdateDto model)
         {
             var entity = data.Where(x => x.Id == model.Id && !x.IsDeleted).FirstOrDefault();
             if (entity == null)
             {
-                return "ID Bulunamadi";
+                return new ApiResult { Data = model.Id, Message = ApiResultMessages.HEE01 };
             }
+
             entity.Name = model.Name;
             entity.StartDate = model.StartDate;
             entity.FinishDate = model.FinishDate;
@@ -89,7 +93,7 @@ namespace net_core_bootcamp_b1_mert.Services
             entity.Subject = model.Subject;
             entity.Desc = model.Desc;
 
-            return ($"{entity.Id} basariyla degisti");
+            return new ApiResult { Data = entity.Id, Message = ApiResultMessages.Ok };
         }
     }
 }

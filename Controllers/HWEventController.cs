@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using net_core_bootcamp_b1_mert.DTOs;
+using net_core_bootcamp_b1_mert.Helpers;
 using net_core_bootcamp_b1_mert.Services;
 using System;
 using System.Collections.Generic;
@@ -22,38 +23,43 @@ namespace net_core_bootcamp_b1_mert.Controllers
         [HttpPost("Add")]
         public IActionResult Add([FromBody]HWEventAddDto model)
         {
-            var _result = _hweventservice.Add(model);
+            var result = _hweventservice.Add(model);
 
-            return Ok(_result);
+            if (result.Message != ApiResultMessages.Ok)
+                return BadRequest(result);
 
+            return Ok(result);
         }
-
 
         [HttpGet("Get")]
         [ProducesResponseType(typeof(IList<HWEventGetDto>), 200)]
         public IActionResult Get()
         {
-            var _result = _hweventservice.Get();
+            var result = _hweventservice.Get();
 
-            return Ok(_result);
-
+            return Ok(result);
         }
 
         [HttpPut("Update")]
         public IActionResult Update([FromBody]HWEventUpdateDto model)
         {
-            var _result = _hweventservice.Update(model);
+            var result = _hweventservice.Update(model);
 
-            return Ok(_result);
+            if (result.Message != ApiResultMessages.Ok)
+                return BadRequest(result);
+
+            return Ok(result);
         }
 
         [HttpDelete("Delete")]
         public IActionResult Delete([BindRequired]Guid id)
         {
-            var _result = _hweventservice.Delete(id);
+            var result = _hweventservice.Delete(id);
 
-            return Ok(_result);
+            if (result.Message != ApiResultMessages.Ok)
+                return BadRequest(result);
+
+            return Ok(result);
         }
-
     }
 }

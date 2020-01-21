@@ -4,5 +4,22 @@
         <name>net-core-bootcamp-b1-mert</name>
     </assembly>
     <members>
+        <member name="T:net_core_bootcamp_b1_mert.Helpers.ApiResultMessages">
+            <summary>
+             Ilk 2 karakter ekran
+             3. Karakter mesaj türü (I:info, W:Warning, E:Error )
+             Son 2 karakter hatayı kodu
+            </summary>
+        </member>
+        <member name="F:net_core_bootcamp_b1_mert.Helpers.ApiResultMessages.Ok">
+            <summary>
+            All Process Succesful
+            </summary>
+        </member>
+        <member name="F:net_core_bootcamp_b1_mert.Helpers.ApiResultMessages.HEE01">
+            <summary>
+            No Event Found 
+            </summary>
+        </member>
     </members>
 </doc>
